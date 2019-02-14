@@ -1,2 +1,2 @@
-# VR-project
-A mini project for Virtual Reality module.
+# 3D-project
+A mini project for 3D programmation module.
