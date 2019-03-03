@@ -113,7 +113,7 @@ public class Weapon : MonoBehaviour
 	public Color beamColor = Color.red;					// The color that will be used to tint the beam material
 	public float startBeamWidth = 0.5f;					// The width of the beam on the starting side
 	public float endBeamWidth = 1.0f;					// The width of the beam on the ending side
-	private float beamHeat = 0.0f;						// Timer to keep track of beam warmup and cooldown
+	public float beamHeat = 0.0f;						// Timer to keep track of beam warmup and cooldown
 	private bool coolingDown = false;					// Whether or not the beam weapon is currently cooling off.  This is used to make sure the weapon isn't fired when it's too close to the maximum heat level
 	private GameObject beamGO;							// The reference to the instantiated beam GameObject
 	private bool beaming = false;						// Whether or not the weapon is currently firing a beam - used to make sure StopBeam() is called after the beam is no longer being fired
@@ -135,7 +135,7 @@ public class Weapon : MonoBehaviour
 	public bool infiniteAmmo = false;					// Whether or not this weapon should have unlimited ammo
 	public int ammoCapacity = 12;						// The number of rounds this weapon can fire before it has to reload
 	public int shotPerRound = 1;						// The number of "bullets" that will be fired on each round.  Usually this will be 1, but set to a higher number for things like shotguns with spread
-	private int currentAmmo;							// How much ammo the weapon currently has
+	public int currentAmmo;							// How much ammo the weapon currently has
 	public float reloadTime = 2.0f;						// How much time it takes to reload the weapon
 	public bool showCurrentAmmo = true;					// Whether or not the current ammo should be displayed in the GUI
 	public bool reloadAutomatically = true;				// Whether or not the weapon should reload automatically when out of ammo
@@ -299,8 +299,9 @@ public class Weapon : MonoBehaviour
 		}
 
         // Reload if the weapon is out of ammo
-        if (reloadAutomatically && currentAmmo <= 0)
+        if (reloadAutomatically && currentAmmo <= 0 && GetComponent<currentStock>().currentTotalAmmo > 0)
         {
+            Debug.Log(GetComponent<currentStock>().currentTotalAmmo);
             Reload(ammoCapacity);
         }
 
@@ -559,13 +560,13 @@ public class Weapon : MonoBehaviour
 		}
 
 		// Ammo Display
-		if (showCurrentAmmo)
+		/*if (showCurrentAmmo)
 		{
 			if (type == WeaponType.Raycast || type == WeaponType.Projectile)
-				GUI.Label(new Rect(10, Screen.height - 30, 100, 20), "Ammo: " + currentAmmo);
+				//GUI.Label(new Rect(10, Screen.height - 30, 100, 20), "Ammo: " + currentAmmo);
 			else if (type == WeaponType.Beam)
-				GUI.Label(new Rect(10, Screen.height - 30, 100, 20), "Heat: " + (int)(beamHeat * 100) + "/" + (int)(maxBeamHeat * 100));
-		}
+				//GUI.Label(new Rect(10, Screen.height - 30, 100, 20), "Heat: " + (int)(beamHeat * 100) + "/" + (int)(maxBeamHeat * 100));
+		}*/
 	}
 
 

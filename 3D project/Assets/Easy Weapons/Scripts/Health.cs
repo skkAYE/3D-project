@@ -9,7 +9,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class playerHealth : MonoBehaviour
+public class Health : MonoBehaviour
 {
 	public bool canDie = true;					// Whether or not this health can die
 	
