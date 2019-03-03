@@ -74,6 +74,7 @@ public class Weapon : MonoBehaviour
 	// External Tools
 	public bool shooterAIEnabled = false;				// Enable features compatible with Shooter AI by Gateway Games
 	public bool bloodyMessEnabled = false;				// Enable features compatible with Bloody Mess by Heavy Diesel Softworks
+    public bool isDead = false;
 	public int weaponType = 0;							// Bloody mess property
 
 	// Auto
@@ -297,9 +298,11 @@ public class Weapon : MonoBehaviour
 			CheckForUserInput();
 		}
 
-		// Reload if the weapon is out of ammo
-		if (reloadAutomatically && currentAmmo <= 0)
-			Reload();
+        // Reload if the weapon is out of ammo
+        if (reloadAutomatically && currentAmmo <= 0)
+        {
+            Reload(ammoCapacity);
+        }
 
 		// Recoil Recovery
 		if (playerWeapon && recoil && type != WeaponType.Beam)
@@ -330,6 +333,7 @@ public class Weapon : MonoBehaviour
 				{
 					if (!warmup)	// Normal firing when the user holds down the fire button
 					{
+                        if(!isDead)
 						Fire();
 					}
 					else if (heat < maxWarmup)	// Otherwise just add to the warmup until the user lets go of the button
@@ -345,6 +349,7 @@ public class Weapon : MonoBehaviour
 					}
 					else
 					{
+                        if(!isDead)
 						Fire();
 					}
 				}
@@ -414,10 +419,12 @@ public class Weapon : MonoBehaviour
 
 		// Reload if the "Reload" button is pressed
 		if (Input.GetButtonDown("Reload"))
-			Reload();
-
-		// If the weapon is semi-auto and the user lets up on the button, set canFire to true
-		if (Input.GetButtonUp("Fire1"))
+        {
+            if (GetComponent<currentStock>().currentTotalAmmo > 0)
+            { Reload(ammoCapacity - currentAmmo); }
+        }
+        // If the weapon is semi-auto and the user lets up on the button, set canFire to true
+        if (Input.GetButtonUp("Fire1"))
 			canFire = true;
 	}
 
@@ -1054,9 +1061,11 @@ public class Weapon : MonoBehaviour
 
 
 	// Reload the weapon
-	void Reload()
+	void Reload(int ammoNumber)
 	{
-		currentAmmo = ammoCapacity;
+        if (ammoNumber > GetComponent<currentStock>().currentTotalAmmo) ammoNumber = GetComponent<currentStock>().currentTotalAmmo;
+        GetComponent<currentStock>().currentTotalAmmo -= ammoNumber;
+        currentAmmo = currentAmmo + ammoNumber;
 		fireTimer = -reloadTime;
 		GetComponent<AudioSource>().PlayOneShot(reloadSound);
 
