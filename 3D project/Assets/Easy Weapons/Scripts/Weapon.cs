@@ -301,7 +301,6 @@ public class Weapon : MonoBehaviour
         // Reload if the weapon is out of ammo
         if (reloadAutomatically && currentAmmo <= 0 && GetComponent<currentStock>().currentTotalAmmo > 0)
         {
-            Debug.Log(GetComponent<currentStock>().currentTotalAmmo);
             Reload(ammoCapacity);
         }
 
@@ -624,8 +623,9 @@ public class Weapon : MonoBehaviour
 				
 				// Damage
 				hit.collider.gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
-				
-				if (shooterAIEnabled)
+                if(hit.transform.name=="Button") hit.collider.gameObject.SendMessageUpwards("test", SendMessageOptions.DontRequireReceiver);
+
+                if (shooterAIEnabled)
 				{
 					hit.transform.SendMessageUpwards("Damage", damage / 100, SendMessageOptions.DontRequireReceiver);
 				}

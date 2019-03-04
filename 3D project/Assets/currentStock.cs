@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class currentStock : MonoBehaviour
 {
-    public int nbStocks;
+    public int currentStocks;
     public int currentTotalAmmo;
     public float beamHeat;
     public float maxBeamHeat;
@@ -16,7 +16,7 @@ public class currentStock : MonoBehaviour
     Text AText;
     private void Start()
     {
-        currentTotalAmmo = GetComponent<Weapon>().ammoCapacity * nbStocks;
+        currentTotalAmmo = GetComponent<Weapon>().ammoCapacity * currentStocks;
         Stext = StocksText.GetComponent<Text>();
         AText = ammoText.GetComponent<Text>();
         maxBeamHeat = GetComponent<Weapon>().maxBeamHeat;
@@ -30,7 +30,7 @@ public class currentStock : MonoBehaviour
     {
         currentAmmo = GetComponent<Weapon>().currentAmmo;
         beamHeat = GetComponent<Weapon>().beamHeat;
-        if (nbStocks == -1) { Stext.enabled = false; AText.text= "Heat : " + (int)(beamHeat * 100) + "/" + (int)(maxBeamHeat * 100); }
+        if (currentStocks == -1) { Stext.enabled = false; AText.text= "Heat : " + (int)(beamHeat * 100) + "/" + (int)(maxBeamHeat * 100); }
         else
         {
             Stext.enabled = true;

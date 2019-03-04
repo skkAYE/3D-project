@@ -28,7 +28,7 @@ public class playerHealth2 : MonoBehaviour
 
     public float startingHealth = 100.0f;       // The amount of health to start with
     public float maxHealth = 100.0f;            // The maximum amount of health
-    private float currentHealth;                // The current ammount of health
+    public float currentHealth;                // The current ammount of health
     public float flashSpeed = 5f;
     public bool replaceWhenDead = false;        // Whether or not a dead replacement should be instantiated.  (Useful for breaking/shattering/exploding effects)
     public GameObject deadReplacement;          // The prefab to instantiate when this GameObject dies
@@ -45,7 +45,7 @@ public class playerHealth2 : MonoBehaviour
     {
         // Initialize the currentHealth variable to the value specified by the user in startingHealth
         currentHealth = startingHealth;
-        playerAudio = GetComponent<AudioSource>();
+        playerAudio = transform.GetChild(0).GetComponent<AudioSource>();
     }
 
     void Update()
@@ -55,6 +55,7 @@ public class playerHealth2 : MonoBehaviour
         {
             // ... set the colour of the damageImage to the flash colour.
             damageImage.color = flashColour;
+            playerAudio.Play();
         }
         // Otherwise...
         else
@@ -65,14 +66,14 @@ public class playerHealth2 : MonoBehaviour
 
         // Reset the damaged flag.
         damaged = false;
+        healthSlider.value = currentHealth;
     }
     public void ChangeHealth(float amount)
     {
         damaged = true;
         // Change the health by the amount specified in the amount variable
         currentHealth += amount;
-        healthSlider.value = currentHealth;
-        playerAudio.Play();
+        
 
         // If the health runs out, then Die.
         if (currentHealth <= 0 && !dead && canDie)
@@ -91,6 +92,7 @@ public class playerHealth2 : MonoBehaviour
         GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
         GetComponentInChildren<Weapon>().enabled = false;
         GetComponent<AudioSource>().enabled = false;
+        playerAudio.enabled = false;
         screenFader.SetActive(true);
         StartCoroutine(Cooldwn(3.0f));
     }
