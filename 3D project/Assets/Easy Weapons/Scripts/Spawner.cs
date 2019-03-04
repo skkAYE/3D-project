@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Spawner : MonoBehaviour
+public class Spawner_persoo : MonoBehaviour
 {
 	public GameObject prefabToSpawn;				// The prefab that should be spawned
 	public float spawnFrequency = 6.0f;				// The time (in seconds) between spawns

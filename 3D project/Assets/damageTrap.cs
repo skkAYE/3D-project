@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class damageTrap : MonoBehaviour
 {
 
     private bool isGettingDamaged = false;
-    float damage = 33.0f;
+    public float damage = 33.0f;
     // Start is called before the first frame update
     IEnumerator Cooldwn(float timing)
     {
