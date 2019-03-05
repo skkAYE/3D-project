@@ -11,6 +11,7 @@ public class ZombieAI : MonoBehaviour
     NavMeshAgent agent;
     // set the target the AI must to follow
     public GameObject target2Follow;
+    public GameObject spawner;
     // set the ditance to Attack
     public float distance2Attack = 5.0f;
     // set the diatance to follow
@@ -21,7 +22,7 @@ public class ZombieAI : MonoBehaviour
     [SerializeField]
     private float distance;
     // to test de dead of the allien
-    bool deadOfZombie = false;
+    bool alreadyDead = false;
     // gives the full missing life back
     float missingLife = 1;
     // Start is called before the first frame update
@@ -29,6 +30,8 @@ public class ZombieAI : MonoBehaviour
     {   //Initialize the parameters of agent and animator
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        target2Follow = GameObject.Find("FpsControllerWithAWeapon Variant");
+        spawner = GameObject.Find("Spawner_1");
     }
 
     // Update is called once per frame
@@ -37,11 +40,18 @@ public class ZombieAI : MonoBehaviour
         // caclulate the distance between the target (FPSController) and the agent IA (Alien)
         distance = Vector3.Distance(target2Follow.transform.position, transform.position);
         // set condition
-        if (Dead() == true)
+        if (GetComponent<Health_Zombie>().dead && !alreadyDead)
         {
-            // call the method "Finish" which is locate in the class of GameOver
-            //GameObject.FindWithTag("PanelGameOver").GetComponent<GamesOver>().Finish();
+            anim.SetTrigger("dead");
+            GetComponent<NavMeshAgent>().enabled = false;
+            GetComponent<CapsuleCollider>().enabled = false;
+            anim.SetBool("walk", false);
+            anim.SetBool("attack", false);
+            alreadyDead = true;
+            StartCoroutine(Cooldwn(5.0f));
+
         }
+        else if (alreadyDead) { }
         else
         {
             if (distance < distance2Follow)
@@ -80,7 +90,7 @@ public class ZombieAI : MonoBehaviour
 
             anim.SetTrigger("dead");
 
-            deadOfZombie = true;
+            alreadyDead = true;
 
             GetComponent<NavMeshAgent>().enabled = false;
 
@@ -89,7 +99,18 @@ public class ZombieAI : MonoBehaviour
             anim.SetBool("walk", false);
             anim.SetBool("attack", false);
         }
-        return deadOfZombie;
+        return alreadyDead;
+    }
+    public void Attack(float damage)
+    {
+        GameObject.Find("FpsControllerWithAWeapon Variant").gameObject.SendMessageUpwards("ChangeHealth", -damage, SendMessageOptions.DontRequireReceiver);
+    }
+    private IEnumerator Cooldwn(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        Destroy(gameObject);
+        if(spawner.GetComponent<Spawning_prefab>().currentSpawn>0)
+            spawner.GetComponent<Spawning_prefab>().currentSpawn--;
     }
 
 }
