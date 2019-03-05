@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawning_prefab : MonoBehaviour
 {
     public int maxSpawn = 10;
-    private int currentSpawn = 0;
+    public int currentSpawn = 0;
     public Vector3 center;
     public Vector3 size = new Vector3(20, 2, 30);
     public float frequency = 2.0f;
