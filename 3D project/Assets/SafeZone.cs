@@ -11,6 +11,7 @@ public class SafeZone : MonoBehaviour
             GameObject.Find("Spawner_3").tag = "Disabled";
             GameObject.Find("Spawner_4").tag = "Disabled";
             GameObject.Find("Spawner_5").tag = "Disabled";
+            GameObject.Find("Spawner_6").tag = "Disabled";
 
     }
 
@@ -21,6 +22,7 @@ public class SafeZone : MonoBehaviour
             GameObject.Find("Spawner_3").tag = "Enabled";
             GameObject.Find("Spawner_4").tag = "Enabled";
             GameObject.Find("Spawner_5").tag = "Enabled";
+            GameObject.Find("Spawner_6").tag = "Enabled";
 
     }
 }

@@ -31,10 +31,17 @@ public class ZombieAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target2Follow = GameObject.Find("FpsControllerWithAWeapon Variant");
-        if (GetComponent<Health_Zombie>().startingHealth==200)
+
+        string spawn = "Spawner_";
+        string tmp = GetComponent<Health_Zombie>().name.Replace("(Clone)", "");
+        spawn = spawn + tmp;
+        Debug.Log(spawn);
+            if (GetComponent<Health_Zombie>().startingHealth==200)
             spawner = GameObject.Find("Spawner_1");
+        else if (GetComponent<Health_Zombie>().startingHealth == 250)
+            spawner = GameObject.Find(spawn);
         else
-            spawner = GameObject.Find("Spawner_2");
+            spawner = GameObject.Find(spawn);
     }
 
     // Update is called once per frame
@@ -43,7 +50,7 @@ public class ZombieAI : MonoBehaviour
         // caclulate the distance between the target (FPSController) and the agent IA (Alien)
         distance = Vector3.Distance(target2Follow.transform.position, transform.position);
         // set condition
-        if (GetComponent<Health_Zombie>().dead && !alreadyDead)
+        if ((GetComponent<Health_Zombie>().dead && !alreadyDead) || (GetComponent<Health_Zombie>().startingHealth == 250 && spawner.tag=="Disabled" && !alreadyDead))
         {
             anim.SetTrigger("dead");
             GetComponent<NavMeshAgent>().enabled = false;
