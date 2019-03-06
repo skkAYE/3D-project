@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spawning_prefab : MonoBehaviour
 {
+    public bool isEnabled = false;
     public int maxSpawn = 10;
     public int currentSpawn = 0;
     public Vector3 center;
@@ -19,7 +20,8 @@ public class Spawning_prefab : MonoBehaviour
 
     IEnumerator Cooldwn(float timing)
     {
-        spawnPrefab();
+        if (isEnabled)
+            spawnPrefab();
         yield return new WaitForSeconds(timing);
         StartCoroutine(Cooldwn(timing));
     }
@@ -28,7 +30,8 @@ public class Spawning_prefab : MonoBehaviour
         if (currentSpawn < maxSpawn)
         {
             Vector3 pos = center + new Vector3(Random.Range(-size.x / 2, size.x / 2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z / 2, size.z / 2));
-            GameObject cube = Instantiate(prefab, pos, Quaternion.identity);
+            Quaternion rot = Quaternion.Euler(Random.Range(0,360), Random.Range(0, 360), Random.Range(0, 360));
+            GameObject cube = Instantiate(prefab, pos, rot);
             currentSpawn++;
         }
     }

@@ -31,7 +31,10 @@ public class ZombieAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target2Follow = GameObject.Find("FpsControllerWithAWeapon Variant");
-        spawner = GameObject.Find("Spawner_1");
+        if (GetComponent<Health_Zombie>().startingHealth==200)
+            spawner = GameObject.Find("Spawner_1");
+        else
+            spawner = GameObject.Find("Spawner_2");
     }
 
     // Update is called once per frame
@@ -54,7 +57,7 @@ public class ZombieAI : MonoBehaviour
         else if (alreadyDead) { }
         else
         {
-            if (distance < distance2Follow)
+            if (distance < distance2Follow && spawner.tag=="Enabled")
             {
                 // tell the agent that it must to follow the target
                 agent.SetDestination(target2Follow.transform.position);
